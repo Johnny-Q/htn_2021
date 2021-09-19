@@ -46,7 +46,7 @@ class Player():
         self.moveState = 2
         self.position_locked = True
         self.switch_cooldown = 13
-        
+
     def jump(self):
         self.resetAnimation()
         print("JUMP")
@@ -72,5 +72,6 @@ class Player():
         self.current_frame += 1
         if(self.current_frame % len(self.animations[self.moveState]) == 0):
             self.resetAnimation()
-        
+        if(self.moveState == 3):
+            offset_y += 200
         WIN.blit(self.animations[self.moveState][self.current_frame], (getX(x[self.lane]) - offset_x, getY(1500) - offset_y))

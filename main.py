@@ -10,12 +10,16 @@ from helpers import WIDTH, HEIGHT
 pygame.init()
 WIN = pygame.display.set_mode((WIDTH,HEIGHT))
 BG = pygame.image.load(os.path.join("Assets", "pictures", "bg.png"))
+SCORE_FONT = pygame.font.Font(os.path.join("Assets", 'Winkle-Regular.ttf'), 35)
+score = 0
 
 game_objs = []
 
 def render():
     WIN.fill((255, 255, 255))
     WIN.blit(pygame.transform.scale(BG, (648, 864)), (0, 0))
+    score_text = SCORE_FONT.render("Score: {}".format(score), 1, (0, 0, 0))
+    WIN.blit(score_text, (100, 100))
     
     for obj in game_objs:
         obj.render(WIN)
@@ -31,7 +35,7 @@ def main():
     level_manager = LevelManager()
 
     def draw_end(text):
-        draw_text = level_manager.SCORE_FONT.render(text, 1, (0, 0, 0))
+        draw_text = SCORE_FONT.render(text, 1, (0, 0, 0))
         WIN.blit(draw_text, (WIDTH//2 - draw_text.get_width()//2, HEIGHT//2 - draw_text.get_height()//2))
         pygame.display.update()
         pygame.time.delay(3000)
@@ -39,6 +43,9 @@ def main():
     
     while run:
         clock.tick(60)
+
+        global score
+        score += 10
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -77,7 +84,7 @@ def main():
             controller.renderFeedback(image, results)
         
         #periodically spawn obstacles
-        if(random.randint(0, 50) == 0):
+        if(random.randint(0, 20) == 0):
             # print("spawning obj")
             game_objs.append(level_manager.createObstacle())
 
@@ -86,7 +93,7 @@ def main():
 
         #collision checking
         if(level_manager.collisionCheck(player)):
-            endText= "Game over! Your score is " + str(level_manager.score)
+            endText= "Game over! Your score is " + str(score)
             controller.cap.release()
             draw_end(endText)
             return

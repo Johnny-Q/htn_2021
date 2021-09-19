@@ -15,11 +15,6 @@ class LevelManager:
         self.pos_obstacles = [DISHES, BOOKS, PIANO]
         self.obstacles = []
 
-        self.score = 0
-
-        self.SCORE_FONT = pygame.font.Font(os.path.join("Assets", 'Winkle-Regular.ttf'), 35)
-
-
     def createObstacle(self):
         index = random.randint(0, 2)
         obstacle_image = self.pos_obstacles[index] 
@@ -34,9 +29,6 @@ class LevelManager:
 
 
     def update(self, WIN, game_objs):
-        self.score += 10
-        score_text = self.SCORE_FONT.render("Score: " + str(self.score), 1, (0, 0, 0))
-        WIN.blit(score_text, (10, 10))
         for obj in self.obstacles:
             obj.depth += 5
             obj.y += 5
@@ -54,7 +46,7 @@ class LevelManager:
     def collisionCheck(self, player):
         for obj in self.obstacles:
             # print(obj.y, getY(BG_ACC_HEIGHT-500))
-            if player.lane == obj.lane and getY(BG_ACC_HEIGHT - 1000) <= obj.y and obj.y <= getY(BG_ACC_HEIGHT - 900):
+            if player.lane == obj.lane and getY(BG_ACC_HEIGHT - 1000) <= obj.y and obj.y <= getY(BG_ACC_HEIGHT - 990):
                 if obj.isPiano and player.moveState==4: 
                     return False    
                 if player.moveState == 3 and not obj.isPiano: #allow jump over objects
